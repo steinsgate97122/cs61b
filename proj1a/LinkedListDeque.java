@@ -1,5 +1,5 @@
 public class LinkedListDeque<T> {
-    public class Node {
+    private class Node {
         T item;  // 用到了外面的generic type, 所以class不能是静态的
         Node next;
         Node prev;
@@ -24,7 +24,7 @@ public class LinkedListDeque<T> {
         size = 0;
     }
 
-    public LinkedListDeque(LinkedListDeque<T> other) {
+    public LinkedListDeque(LinkedListDeque other) {
         this();
         Node cur = sentinel.next;
         while (cur != sentinel) {
@@ -110,7 +110,7 @@ public class LinkedListDeque<T> {
         return helpGetRecursive(index, sentinel.next);
     }
 
-    public T helpGetRecursive(int index, Node node) {
+    private T helpGetRecursive(int index, Node node) {
         if (node == sentinel) {
             return null;
         }
