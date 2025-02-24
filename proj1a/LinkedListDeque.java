@@ -24,7 +24,7 @@ public class LinkedListDeque<T> {
         size = 0;
     }
 
-    public LinkedListDeque(LinkedListDeque other) {
+    public LinkedListDeque(LinkedListDeque<T> other) {
         this();
         Node cur = sentinel.next;
         while (cur != sentinel) {
