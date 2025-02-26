@@ -24,6 +24,7 @@ public class LinkedListDeque<T> {
         size = 0;
     }
 
+/*
     public LinkedListDeque(LinkedListDeque<T> other) {
         this();
         Node cur = sentinel.next;
@@ -32,6 +33,7 @@ public class LinkedListDeque<T> {
             cur = cur.next;
         }
     }
+*/
 
     public boolean isEmpty() {
         return size == 0;

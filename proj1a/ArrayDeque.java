@@ -1,5 +1,3 @@
-import java.math.BigDecimal;
-
 public class ArrayDeque<T> {
     private T[] array;
     private int nextFirst;
@@ -23,7 +21,8 @@ public class ArrayDeque<T> {
             originLast = array.length - 1;
         }
         System.arraycopy(array, originFirst, newArray, 0, array.length - originFirst);
-        System.arraycopy(array, 0, newArray, array.length - originFirst, size - (array.length - originFirst));
+        System.arraycopy(array, 0, newArray, array.length - originFirst,
+                size - (array.length - originFirst));
         array = newArray;
         nextFirst = array.length - 1;
         nextLast = size;
@@ -46,7 +45,8 @@ public class ArrayDeque<T> {
                     System.arraycopy(array, originFirst, newArray, 0, size);
                 } else {
                     System.arraycopy(array, originFirst, newArray, 0, array.length - originFirst);
-                    System.arraycopy(array, 0, newArray, array.length - originFirst, size - (array.length - originFirst));
+                    System.arraycopy(array, 0, newArray, array.length - originFirst,
+                            size - (array.length - originFirst));
                 }
                 array = newArray;
                 nextFirst = array.length - 1;
@@ -135,16 +135,5 @@ public class ArrayDeque<T> {
         }
         int actualIndex = (first + index) % array.length;
         return array[actualIndex];
-    }
-
-    public static void main(String[] args) {
-        ArrayDeque<Integer> deque = new ArrayDeque<>();
-        for (int i = 0; i < 1000; i++) {
-            deque.addFirst(i);
-        }
-        for (int i = 0; i < 900; i++) {
-            deque.removeFirst();
-        }
-        deque.printDeque();
     }
 }
