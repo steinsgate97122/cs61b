@@ -73,6 +73,10 @@ public class GuitarPlayer {
         return sum;
     }
 
+    /*
+    sequence.getTracks()包含了MIDI文件解析后的所有音轨（Track），每个Track都代表一种乐器或者一种节奏
+    代码中将这些Track合并为一个Track，event也都合并了
+     */
     public void play() {
         if (sequence == null) {
             return;
@@ -83,9 +87,7 @@ public class GuitarPlayer {
         double bpm = 120;  // beats per min
         double samplesPerTick = (StdAudio.SAMPLE_RATE * 60.0) / (sequence.getResolution() * bpm);
 
-        // sequence.getTracks()包含了MIDI文件解析后的所有音轨（Track），每个Track都代表一种乐器或者一种节奏
         Track[] tracks = sequence.getTracks();
-        // 这里创建了一个新的Track，tracks[i].get(j)获取了对应音轨的时间，下面这段代码可以认为将所有音轨合并为1个Track
         Track track = sequence.createTrack();
         int maxSize = 0;
         int lead = 0;
@@ -121,11 +123,7 @@ public class GuitarPlayer {
                 continue;
             }
 
-            /* 非MetaMessage，那么event就是音符事件，每个event都有一个tick值，表示乐谱的时间刻度
-            下面这段代码中，当前播放进度是tick，而事件对应的tick在当前之后，那么需要play操作后才能赶上event的tick点
-             */
             if (event.getTick() > tick) {
-                // 计算从tick赶到event.getTick()所需的sample数量
                 int samplesToSkip = (int) ((event.getTick() - tick) * samplesPerTick);
                 for (int j = 0; j < samplesToSkip; j++) {
                     tic();
