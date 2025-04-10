@@ -37,7 +37,7 @@ public class RandomWorld {
         maxLength = Math.min(Math.min(maxLength, height / 2), width / 2);
         // room最多填充一半游戏空间，由此确定room最多的生成数量
         int maxRoomNum = (height * width) / (maxLength * maxLength * 2);
-        int roomNum = RANDOM.nextInt(3, maxRoomNum);
+        int roomNum = RANDOM.nextInt(maxRoomNum - 3) + 3;
         Room[] rooms = generateRooms(world, roomNum, maxLength);
         // 根据rooms生成hallway，随机连接
         ArrayList<Room> roomList = new ArrayList<>(List.of(rooms));
@@ -67,10 +67,10 @@ public class RandomWorld {
         int curRoomRum = 0;
         while (curRoomRum < roomNum) {
             // 生成room的height、width、坐标，坐标不用0，外面留一层放围墙
-            int roomHeight = RANDOM.nextInt(3, maxRoomSize);
-            int roomWidth = RANDOM.nextInt(3, maxRoomSize);
-            int roomPositionX = RANDOM.nextInt(1, width - roomWidth - 1);
-            int roomPositionY = RANDOM.nextInt(1, height - roomHeight - 1);
+            int roomHeight = RANDOM.nextInt(maxRoomSize - 3) + 3;
+            int roomWidth = RANDOM.nextInt(maxRoomSize - 3) + 3;
+            int roomPositionX = RANDOM.nextInt(width - roomWidth - 1 - 1) + 1;
+            int roomPositionY = RANDOM.nextInt(height - roomHeight - 1 - 1) + 1;
             Position startPosition = new Position(roomPositionX, roomPositionY);
             Room room = new Room(startPosition, roomHeight, roomWidth);
             if (!isOverlap(rooms, room) && addRoom(world, room)) {
