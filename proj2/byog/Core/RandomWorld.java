@@ -145,9 +145,9 @@ public class RandomWorld {
      */
     private boolean addWall(TETile[][] world, Room room) {
         if (room.p.y - 1 < 0
-                || room.p.y + room.height > world[0].length
-                || room.p.x - 1 < 0
-                || room.p.x + room.width > world.length) {
+            || room.p.y + room.height > world[0].length
+            || room.p.x - 1 < 0
+            || room.p.x + room.width > world.length) {
            return false;
         }
         TETile fillTile = Tileset.WALL;
