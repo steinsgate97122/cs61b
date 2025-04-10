@@ -1,9 +1,9 @@
 package byog.Core;
 
 public class Room {
-    public Position p;
-    public int height;
-    public int width;
+    Position p;
+    int height;
+    int width;
 
     public Room(Position p, int height, int width) {
         this.p = p;

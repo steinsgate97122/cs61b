@@ -28,14 +28,15 @@ public class Game {
      * @return the 2D TETile[][] representing the state of the world
      */
     public TETile[][] playWithInputString(String input) {
-        // TODO: Fill out this method to run the game using the input passed in,
+        // Fill out this method to run the game using the input passed in,
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
 
         int width = 50;
         int height = 80;
         TETile[][] finalWorldFrame = new TETile[width][height];
-        if ((input.startsWith("n") || input.startsWith("N")) && (input.endsWith("s") || input.endsWith("S"))) {
+        if ((input.startsWith("n") || input.startsWith("N"))
+                && (input.endsWith("s") || input.endsWith("S"))) {
             // new game
             String seedString = input.substring(1, input.length() - 1);
             long seed = Long.parseLong(seedString);

@@ -6,15 +6,15 @@ import byog.TileEngine.Tileset;
 
 public class DemoTest {
     public static void main(String[] args) {
-        int WIDTH = 80;
-        int HEIGHT = 50;
+        int width = 80;
+        int height = 50;
         TERenderer ter = new TERenderer();
-        ter.initialize(WIDTH, HEIGHT);
+        ter.initialize(width, height);
 
-        TETile[][] world = new TETile[WIDTH][HEIGHT];
+        TETile[][] world = new TETile[width][height];
 
-        for (int x = 0; x < WIDTH; x += 1) {
-            for (int y = 0; y < HEIGHT; y += 1) {
+        for (int x = 0; x < width; x += 1) {
+            for (int y = 0; y < height; y += 1) {
                 world[x][y] = Tileset.NOTHING;
             }
         }

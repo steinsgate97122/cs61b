@@ -106,10 +106,10 @@ public class RandomWorld {
             roomCorners[2] = new Position(xN, yN + heightN);
             roomCorners[3] = new Position(xN + widthN, yN + heightN);
             for (Position roomCorner : roomCorners) {
-                if ((roomCorner.x >= x - 3) &&
-                        (roomCorner.x <= x + width + 3) &&
-                        (roomCorner.y >= y - 3) &&
-                        (roomCorner.y <= y + height + 3)
+                if ((roomCorner.x >= x - 3)
+                        && (roomCorner.x <= x + width + 3)
+                        && (roomCorner.y >= y - 3)
+                        && (roomCorner.y <= y + height + 3)
                 ) {
                     return true;
                 }
@@ -144,12 +144,10 @@ public class RandomWorld {
     如果这些在world中不存在就报错
      */
     private boolean addWall(TETile[][] world, Room room) {
-        if (
-                room.p.y - 1 < 0 ||
-                room.p.y + room.height > world[0].length ||
-                room.p.x - 1 < 0 ||
-                room.p.x + room.width > world.length
-        ) {
+        if (room.p.y - 1 < 0
+                || room.p.y + room.height > world[0].length
+                || room.p.x - 1 < 0
+                || room.p.x + room.width > world.length) {
            return false;
         }
         TETile fillTile = Tileset.WALL;
