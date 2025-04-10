@@ -32,7 +32,16 @@ public class Game {
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
 
-        TETile[][] finalWorldFrame = null;
+        int width = 50;
+        int height = 80;
+        TETile[][] finalWorldFrame = new TETile[width][height];
+        if ((input.startsWith("n") || input.startsWith("N")) && (input.endsWith("s") || input.endsWith("S"))) {
+            // new game
+            String seedString = input.substring(1, input.length() - 1);
+            long seed = Long.parseLong(seedString);
+            RandomWorld randomWorld = new RandomWorld(seed);
+            randomWorld.generateWorld(finalWorldFrame);
+        }
         return finalWorldFrame;
     }
 }
