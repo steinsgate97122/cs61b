@@ -148,7 +148,7 @@ public class RandomWorld {
             || room.p.y + room.height > world[0].length
             || room.p.x - 1 < 0
             || room.p.x + room.width > world.length) {
-           return false;
+            return false;
         }
         TETile fillTile = Tileset.WALL;
         for (int i = 0; i < (room.width + 2); i++) {
