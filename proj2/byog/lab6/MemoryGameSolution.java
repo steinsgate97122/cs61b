@@ -58,6 +58,8 @@ public class MemoryGameSolution {
             flashSequence(roundString);
 
             playerTurn = true;
+            // 其实在solicitNCharsInput的之前，可以清除一下键盘缓冲区，丢弃残留的无用输入
+            clearKeyboardBuffer();
             String userInput = solicitNCharsInput(round);
 
             if (!userInput.equals(roundString)) {
@@ -68,6 +70,12 @@ public class MemoryGameSolution {
                 StdDraw.pause(1500);
                 round += 1;
             }
+        }
+    }
+
+    private void clearKeyboardBuffer() {
+        while (StdDraw.hasNextKeyTyped()) {
+            StdDraw.nextKeyTyped();
         }
     }
 
