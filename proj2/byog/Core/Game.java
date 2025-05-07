@@ -61,15 +61,15 @@ public class Game {
         // drawn if the same inputs had been given to playWithKeyboard().
         TETile[][] finalWorldFrame = new TETile[WIDTH][HEIGHT];
         // 假定输入起始都是N#S或者L，:Q结尾会返回保存的TETile[][]
-        if (input.startsWith("N")) {
+        if (input.startsWith("n")) {
             // 先提取出seed
-            int sIndex = input.indexOf("S");
+            int sIndex = input.indexOf("s");
             String seedString = input.substring(1, sIndex);
             long seed = Long.parseLong(seedString);
             RandomWorld randomWorld = new RandomWorld(seed);
             randomWorld.generateWorld(finalWorldFrame);
             randomWorld.playGame(finalWorldFrame, input.substring(sIndex + 1));
-        } else if (input.startsWith("L")) {
+        } else if (input.startsWith("l")) {
             finalWorldFrame = GameUtils.loadGame();
             if (finalWorldFrame != null) {
                 Position playerPosition = GameUtils.findPlayer(finalWorldFrame);

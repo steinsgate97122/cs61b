@@ -5,7 +5,8 @@ import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 import edu.princeton.cs.introcs.StdDraw;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -83,7 +84,8 @@ public class RandomWorld {
 
         // 生成玩家坐标，固定放在右上角房间的中间，离出口远一点
         Room startRoom = roomList.get(roomList.size() - 1);
-        playerPosition = new Position(startRoom.p.x + (startRoom.width / 2), startRoom.p.y + (startRoom.height / 2));
+        playerPosition = new Position(
+                startRoom.p.x + (startRoom.width / 2), startRoom.p.y + (startRoom.height / 2));
         world[playerPosition.x][playerPosition.y] = Tileset.PLAYER;
     }
 
