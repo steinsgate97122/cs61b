@@ -8,7 +8,7 @@ public class Game {
     /* Feel free to change the width and height. */
     public static final int WIDTH = 80;
     public static final int HEIGHT = 45;
-    TETile[][] worldFrame;
+    private static TETile[][] worldFrame = null;
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
@@ -61,6 +61,7 @@ public class Game {
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
         // 假定输入起始都是N#S或者L，:Q结尾会返回保存的TETile[][]
+        input = input.toLowerCase();
         TETile[][] finalWorldFrame = new TETile[WIDTH][HEIGHT];
         if (input.startsWith("n")) {
             // 创建新世界
