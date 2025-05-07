@@ -7,12 +7,40 @@ public class Game {
     TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
     public static final int WIDTH = 80;
-    public static final int HEIGHT = 30;
+    public static final int HEIGHT = 45;
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
      */
     public void playWithKeyboard() {
+        ter.initialize(WIDTH, HEIGHT);
+        while (true) {
+            GameUtils.displayMainMenu(WIDTH, HEIGHT);
+            char playerCommand = GameUtils.getUserInput();
+            if (playerCommand == 'N' || playerCommand == 'n') {
+                TETile[][] finalWorldFrame = new TETile[WIDTH][HEIGHT];
+                String userInputSeed = GameUtils.getUserInputSeed(WIDTH, HEIGHT);
+                int seed = Integer.parseInt(userInputSeed);
+                RandomWorld randomWorld = new RandomWorld(seed, ter);
+                randomWorld.generateWorld(finalWorldFrame);
+                if (randomWorld.playGame(finalWorldFrame)) {
+                    GameUtils.displayEnd(WIDTH, HEIGHT);
+                    return;
+                }
+            } else if (playerCommand == 'L' || playerCommand == 'l') {
+                TETile[][] loadWorldFrame = GameUtils.loadGame();
+                if (loadWorldFrame != null) {
+                    Position playerPosition = GameUtils.findPlayer(loadWorldFrame);
+                    RandomWorld randomWorld = new RandomWorld(ter, playerPosition);
+                    if (randomWorld.playGame(loadWorldFrame)) {
+                        GameUtils.displayEnd(WIDTH, HEIGHT);
+                        return;
+                    }
+                }
+            } else if (playerCommand == 'Q' || playerCommand == 'q') {
+                return;
+            }
+        }
     }
 
     /**
@@ -31,17 +59,23 @@ public class Game {
         // Fill out this method to run the game using the input passed in,
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
-
-        int width = 50;
-        int height = 80;
-        TETile[][] finalWorldFrame = new TETile[width][height];
-        if ((input.startsWith("n") || input.startsWith("N"))
-                && (input.endsWith("s") || input.endsWith("S"))) {
-            // new game
-            String seedString = input.substring(1, input.length() - 1);
+        TETile[][] finalWorldFrame = new TETile[WIDTH][HEIGHT];
+        // 假定输入起始都是N#S或者L，:Q结尾会返回保存的TETile[][]
+        if (input.startsWith("N")) {
+            // 先提取出seed
+            int sIndex = input.indexOf("S");
+            String seedString = input.substring(1, sIndex);
             long seed = Long.parseLong(seedString);
             RandomWorld randomWorld = new RandomWorld(seed);
             randomWorld.generateWorld(finalWorldFrame);
+            randomWorld.playGame(finalWorldFrame, input.substring(sIndex + 1));
+        } else if (input.startsWith("L")) {
+            finalWorldFrame = GameUtils.loadGame();
+            if (finalWorldFrame != null) {
+                Position playerPosition = GameUtils.findPlayer(finalWorldFrame);
+                RandomWorld randomWorld = new RandomWorld(ter, playerPosition);
+                randomWorld.playGame(finalWorldFrame, input.substring(1));
+            }
         }
         return finalWorldFrame;
     }

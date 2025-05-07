@@ -1,8 +1,11 @@
 package byog.Core;
 
+import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
+import edu.princeton.cs.introcs.StdDraw;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,16 +19,35 @@ rooms and hallways还需要连通，其他都可以自由发挥
 房间也应该避免过于集中，可能先把地图分成几个区块然后在每个区块随机生成更好，另外房间大小也应该区分大一些，比如20%生成大房间，80%小房间
  */
 public class RandomWorld {
-    private long seed = 99233;
+    private long seed = 99232;
     private final Random RANDOM;
+    private Position playerPosition;  // 表示玩家当前所在坐标
+    private boolean gameEnd;
+    private TERenderer ter;
 
     public RandomWorld() {
         RANDOM = new Random(seed);
+        gameEnd = false;
     }
 
     public RandomWorld(long seed) {
         this.seed = seed;
         RANDOM = new Random(seed);
+        gameEnd = false;
+    }
+
+    public RandomWorld(long seed, TERenderer ter) {
+        this.seed = seed;
+        RANDOM = new Random(seed);
+        gameEnd = false;
+        this.ter = ter;
+    }
+
+    public RandomWorld(TERenderer ter, Position playerPosition) {
+        RANDOM = new Random(seed);
+        gameEnd = false;
+        this.ter = ter;
+        this.playerPosition = playerPosition;
     }
 
     public void generateWorld(TETile[][] world) {
@@ -52,6 +74,17 @@ public class RandomWorld {
         Collections.shuffle(roomList, RANDOM);
         addHallway(world, roomList.get(0), roomList.get(1));
         addHallway(world, roomList.get(0), roomList.get(2));
+
+        // 随机生成出口坐标，出口一般都是在room的边缘，方便起见固定取左下角的房间，可以给Room写个排序方法，左下角的默认放在第一个
+        Collections.sort(roomList);
+        Room exitRoom = roomList.get(0);
+        // 左下角房间的下方一定是墙壁，出口就开在这面墙壁的中间
+        world[exitRoom.p.x + (exitRoom.width / 2)][exitRoom.p.y - 1] = Tileset.LOCKED_DOOR;
+
+        // 生成玩家坐标，固定放在右上角房间的中间，离出口远一点
+        Room startRoom = roomList.get(roomList.size() - 1);
+        playerPosition = new Position(startRoom.p.x + (startRoom.width / 2), startRoom.p.y + (startRoom.height / 2));
+        world[playerPosition.x][playerPosition.y] = Tileset.PLAYER;
     }
 
     private Room[] generateRooms(TETile[][] world, int roomNum, int maxRoomSize) {
@@ -241,6 +274,78 @@ public class RandomWorld {
             if (world[x - 1][y1 + i].equals(Tileset.NOTHING)) {
                 world[x - 1][y1 + i] = wall;
             }
+        }
+    }
+
+    public boolean playGame(TETile[][] world) {
+        ter.renderFrame(world);
+        while (!gameEnd) {
+            if (StdDraw.hasNextKeyTyped()) {
+                char nextMove = StdDraw.nextKeyTyped();
+                Position nextPosition = new Position(playerPosition.x, playerPosition.y);
+                if (nextMove == 'W' || nextMove == 'w') {
+                    nextPosition.y = nextPosition.y + 1;
+                } else if (nextMove == 'S' || nextMove == 's') {
+                    nextPosition.y = nextPosition.y - 1;
+                } else if (nextMove == 'A' || nextMove == 'a') {
+                    nextPosition.x = nextPosition.x - 1;
+                } else if (nextMove == 'D' || nextMove == 'd') {
+                    nextPosition.x = nextPosition.x + 1;
+                } else if (nextMove == 'Q' || nextMove == 'q') {
+                    GameUtils.saveGame(world);
+                    return false;
+                }
+                if (world[nextPosition.x][nextPosition.y].equals(Tileset.FLOOR)) {
+                    world[nextPosition.x][nextPosition.y] = Tileset.PLAYER;
+                    world[playerPosition.x][playerPosition.y] = Tileset.FLOOR;
+                    playerPosition = nextPosition;
+                }
+                if (world[nextPosition.x][nextPosition.y].equals(Tileset.LOCKED_DOOR)) {
+                    gameEnd = true;
+                }
+            }
+            render(world);
+        }
+        return true;
+    }
+
+    public void playGame(TETile[][] world, String str) {
+        char[] strCharArray = str.toCharArray();
+        for (char nextMove : strCharArray) {
+            Position nextPosition = new Position(playerPosition.x, playerPosition.y);
+            if (nextMove == 'W' || nextMove == 'w') {
+                nextPosition.y = nextPosition.y + 1;
+            } else if (nextMove == 'S' || nextMove == 's') {
+                nextPosition.y = nextPosition.y - 1;
+            } else if (nextMove == 'A' || nextMove == 'a') {
+                nextPosition.x = nextPosition.x - 1;
+            } else if (nextMove == 'D' || nextMove == 'd') {
+                nextPosition.x = nextPosition.x + 1;
+            } else if (nextMove == 'Q' || nextMove == 'q') {
+                GameUtils.saveGame(world);
+                return;
+            }
+            if (world[nextPosition.x][nextPosition.y].equals(Tileset.FLOOR)) {
+                world[nextPosition.x][nextPosition.y] = Tileset.PLAYER;
+                world[playerPosition.x][playerPosition.y] = Tileset.FLOOR;
+                playerPosition = nextPosition;
+            }
+        }
+    }
+
+    private void render(TETile[][] world) {
+        StdDraw.clear(new Color(0, 0, 0));
+        // 绘制主画面
+        ter.renderFrame(world);
+        // 获取当前鼠标所在位置
+        int x = (int) StdDraw.mouseX();
+        int y = (int) StdDraw.mouseY();
+        if (x >= 0 && x < world.length && y >= 0 && y < world[0].length) {
+            Font font = new Font("Monaco", Font.BOLD, 15);
+            StdDraw.setFont(font);
+            StdDraw.setPenColor(Color.white);
+            StdDraw.textLeft(1, world[0].length + 1, world[x][y].description());
+            StdDraw.show();
         }
     }
 }

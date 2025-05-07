@@ -32,11 +32,11 @@ public class TERenderer {
         this.height = h;
         this.xOffset = xOff;
         this.yOffset = yOff;
-        StdDraw.setCanvasSize(width * TILE_SIZE, height * TILE_SIZE);
+        StdDraw.setCanvasSize(width * TILE_SIZE, (height + 2) * TILE_SIZE);
         Font font = new Font("Monaco", Font.BOLD, TILE_SIZE - 2);
         StdDraw.setFont(font);      
         StdDraw.setXscale(0, width);
-        StdDraw.setYscale(0, height);
+        StdDraw.setYscale(0, height + 2);
 
         StdDraw.clear(new Color(0, 0, 0));
 
