@@ -61,10 +61,9 @@ public class Game {
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
         // 假定输入起始都是N#S或者L，:Q结尾会返回保存的TETile[][]
-        TETile[][] finalWorldFrame = null;
+        TETile[][] finalWorldFrame = new TETile[WIDTH][HEIGHT];
         if (input.startsWith("n")) {
             // 创建新世界
-            finalWorldFrame = new TETile[WIDTH][HEIGHT];
             worldFrame = finalWorldFrame;
             // 先提取出seed
             int sIndex = input.indexOf("s");
