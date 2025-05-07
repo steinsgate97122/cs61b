@@ -8,6 +8,7 @@ public class Game {
     /* Feel free to change the width and height. */
     public static final int WIDTH = 80;
     public static final int HEIGHT = 45;
+    TETile[][] worldFrame;
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
@@ -59,9 +60,12 @@ public class Game {
         // Fill out this method to run the game using the input passed in,
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
-        TETile[][] finalWorldFrame = new TETile[WIDTH][HEIGHT];
         // 假定输入起始都是N#S或者L，:Q结尾会返回保存的TETile[][]
+        TETile[][] finalWorldFrame = null;
         if (input.startsWith("n")) {
+            // 创建新世界
+            finalWorldFrame = new TETile[WIDTH][HEIGHT];
+            worldFrame = finalWorldFrame;
             // 先提取出seed
             int sIndex = input.indexOf("s");
             String seedString = input.substring(1, sIndex);
@@ -70,11 +74,11 @@ public class Game {
             randomWorld.generateWorld(finalWorldFrame);
             randomWorld.playGame(finalWorldFrame, input.substring(sIndex + 1));
         } else if (input.startsWith("l")) {
-            finalWorldFrame = GameUtils.loadGame();
-            if (finalWorldFrame != null) {
-                Position playerPosition = GameUtils.findPlayer(finalWorldFrame);
+            if (worldFrame != null) {
+                Position playerPosition = GameUtils.findPlayer(worldFrame);
                 RandomWorld randomWorld = new RandomWorld(ter, playerPosition);
-                randomWorld.playGame(finalWorldFrame, input.substring(1));
+                randomWorld.playGame(worldFrame, input.substring(1));
+                finalWorldFrame = worldFrame;
             }
         }
         return finalWorldFrame;

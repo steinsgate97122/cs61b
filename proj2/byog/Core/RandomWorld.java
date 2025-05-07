@@ -324,7 +324,6 @@ public class RandomWorld {
             } else if (nextMove == 'D' || nextMove == 'd') {
                 nextPosition.x = nextPosition.x + 1;
             } else if (nextMove == 'Q' || nextMove == 'q') {
-                GameUtils.saveGame(world);
                 return;
             }
             if (world[nextPosition.x][nextPosition.y].equals(Tileset.FLOOR)) {
