@@ -4,13 +4,13 @@ import edu.princeton.cs.introcs.StdRandom;
 import edu.princeton.cs.introcs.StdStats;
 
 public class PercolationStats {
-    int N;
-    int T;
-    PercolationFactory pf;
-    double mean;
-    double stddev;
-    double confidenceLow;
-    double confidenceHigh;
+    private int N;
+    private int T;
+    private PercolationFactory pf;
+    private double mean;
+    private double stddev;
+    private double confidenceLow;
+    private double confidenceHigh;
 
     // perform T independent experiments on an N-by-N grid
     public PercolationStats(int N, int T, PercolationFactory pf) {

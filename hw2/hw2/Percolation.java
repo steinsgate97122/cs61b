@@ -13,8 +13,8 @@ public class Percolation {
     */
     private int size;
     private boolean[][] world;
-    WeightedQuickUnionUF quickUnionUFAll;
-    WeightedQuickUnionUF quickUnionUFTop;
+    private WeightedQuickUnionUF quickUnionUFAll;
+    private WeightedQuickUnionUF quickUnionUFTop;
     private int openCount;
 
     /* create N-by-N grid, with all sites initially blocked
@@ -98,5 +98,8 @@ public class Percolation {
     // does the system percolate?
     public boolean percolates() {
         return quickUnionUFAll.connected(size * size, size * size + 1);
+    }
+
+    public static void main(String[] args) {
     }
 }
