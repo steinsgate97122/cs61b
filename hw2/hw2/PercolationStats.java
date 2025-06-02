@@ -26,8 +26,8 @@ public class PercolationStats {
         }
         this.mean = StdStats.mean(fractionArr);
         this.stddev = StdStats.stddev(fractionArr);
-        this.confidenceLow = this.mean - 1.96 * Math.sqrt(this.stddev) * Math.pow(T, -1.0 / 2.0);
-        this.confidenceHigh = this.mean + 1.96 * Math.sqrt(this.stddev) * Math.pow(T, -1.0 / 2.0);
+        this.confidenceLow = this.mean - 1.96 * stddev / Math.sqrt(T);
+        this.confidenceHigh = this.mean + 1.96 * stddev / Math.sqrt(T);
     }
 
     private double experiment() {
