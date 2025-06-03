@@ -33,3 +33,7 @@ public class RangeFinding {
         }
     }
 }
+/*
+假设落在[min, max]内的元素总个数为R，BST节点总个数为N，证明pruning后时间复杂度为θ(R+logN)
+大致分析下思路，剪枝操作需要θ(logN)，剩下的查找需要θ(R)，求和就是θ(R+logN)
+ */
