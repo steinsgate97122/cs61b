@@ -1,5 +1,6 @@
 package lab9;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -27,6 +28,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     private Node root;  /* Root node of the tree. */
     private int size; /* The number of key-value pairs in the tree */
+    private Set<K> keySet;
 
     /* Creates an empty BSTMap. */
     public BSTMap() {
@@ -38,6 +40,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     public void clear() {
         root = null;
         size = 0;
+        keySet = new HashSet<>();
     }
 
     /** Returns the value mapped to by KEY in the subtree rooted in P.
@@ -69,6 +72,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
       * Or if p is null, it returns a one node BSTMap containing (KEY, VALUE).
      */
     private Node putHelper(K key, V value, Node p) {
+        keySet.add(key);
         if (p == null) {
             size += 1;
             return new Node(key, value);
@@ -103,7 +107,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     /* Returns a Set view of the keys contained in this map. */
     @Override
     public Set<K> keySet() {
-        throw new UnsupportedOperationException();
+        return keySet;
     }
 
     /** Removes KEY from the tree if present
@@ -112,7 +116,55 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        V removeValue = get(key);
+        if (removeValue == null) {
+            return null;
+        }
+        removeHelper(key, root);
+        size -= 1;
+        keySet.remove(key);
+        return removeValue;
+    }
+
+    // 返回删除后的根节点
+    private Node removeHelper(K key, Node p) {
+        if (p == null) {
+            return null;
+        }
+        int compareRes = key.compareTo(p.key);
+        if (compareRes > 0) {
+            p.right = removeHelper(key, p.right);
+        } else if (compareRes < 0) {
+            p.left = removeHelper(key, p.left);
+        } else {
+            if (p.left == null) {
+                return p.right;
+            }
+            if (p.right == null) {
+                return p.left;
+            }
+            // 左子树的最大子节点替代p
+            Node newP = findMaxKey(p);
+            removeMaxKey(p);
+            p.key = newP.key;
+            p.value = newP.value;
+        }
+        return p;
+    }
+
+    private Node removeMaxKey(Node p) {
+        if (p.right == null) {
+            return p.left;
+        }
+        p.right = removeMaxKey(p.right);
+        return p;
+    }
+    
+    private Node findMaxKey(Node p) {
+        if (p.right == null) {
+            return p;
+        }
+        return findMaxKey(p.right);
     }
 
     /** Removes the key-value entry for the specified key only if it is
@@ -121,7 +173,10 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      **/
     @Override
     public V remove(K key, V value) {
-        throw new UnsupportedOperationException();
+        if (!get(key).equals(value)) {
+            return null;
+        }
+        return remove(key);
     }
 
     @Override
