@@ -146,7 +146,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
                 return p.left;
             }
             // 左子树的最大子节点替代p
-            Node newP = findMaxKey(p);
+            Node newP = findMaxKey(p.left);
             removeMaxKey(p);
             p.key = newP.key;
             p.value = newP.value;
