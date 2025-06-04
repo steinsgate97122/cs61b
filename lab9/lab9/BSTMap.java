@@ -1,7 +1,9 @@
 package lab9;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -120,7 +122,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         if (removeValue == null) {
             return null;
         }
-        removeHelper(key, root);
+        root = removeHelper(key, root);
         size -= 1;
         keySet.remove(key);
         return removeValue;
@@ -181,6 +183,6 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     @Override
     public Iterator<K> iterator() {
-        throw new UnsupportedOperationException();
+        return keySet.iterator();
     }
 }
